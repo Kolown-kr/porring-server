@@ -1,10 +1,10 @@
-package com.kolown.kolown;
+package com.kolown.porring;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class KolownApplicationTests {
+class PorringApplicationTests {
 
 	@Test
 	void contextLoads() {
