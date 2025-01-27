@@ -24,12 +24,18 @@ repositories {
 }
 
 dependencies {
+	// Jsonwebtoken
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 	// Spring Boot Starters
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+
+	// Jakarta Bean Validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// MySQL Connector (Spring Boot dependency management handles the version)
 	runtimeOnly 'com.mysql:mysql-connector-j'
