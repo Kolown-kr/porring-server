@@ -1,7 +1,7 @@
 services:
 
   app:
-    build: .
+    image: azul/zulu-openjdk:17.0.9
     ports:
       - 8080:8080
     depends_on:
@@ -13,7 +13,7 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    command: ./gradlew bootRun -Pdocker
+    command: sh -c "chmod +x ./gradlew && ./gradlew bootRun -Pdocker"
 
   mysql:
     image: mysql:8.4.0
