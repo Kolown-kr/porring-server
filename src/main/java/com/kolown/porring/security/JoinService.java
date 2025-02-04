@@ -17,15 +17,13 @@ public class JoinService {
     @Transactional
     public void joinByEmailAndPassword(JoinDto joinDto) throws RuntimeException {
 
-        boolean isExistEmail = emailAccountRepository.existsByEmail(joinDto.getEmail());
+        boolean isExistEmail = emailAccountRepository.existsByEmail(joinDto.email());
         if(isExistEmail){
             throw new RuntimeException("이미 존재하는 이메일 입니다.");
         }
 
-        EmailAccount newEmailAccount = EmailAccount.builder()
-                .email(joinDto.getEmail())
-                .password(passwordEncoder.encode(joinDto.getPassword()))
-                .build();
+        String encodedPassword = passwordEncoder.encode(joinDto.password());
+        EmailAccount newEmailAccount = new EmailAccount(joinDto.email(), encodedPassword);
         emailAccountRepository.save(newEmailAccount);
     }
 }

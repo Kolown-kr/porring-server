@@ -11,12 +11,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "sub_type")
 @Table(name = "accounts")
-public abstract class Account {
+public abstract class Account extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
@@ -25,15 +24,4 @@ public abstract class Account {
     @Column(name = "sub_type" ,insertable = false, updatable = false)
     private String subType;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    protected Account() {}
-    protected Account(String subType) {
-        this.subType = subType;
-    }
 }
