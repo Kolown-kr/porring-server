@@ -1,5 +1,6 @@
 package com.kolown.porring.account.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -19,6 +20,7 @@ import java.util.List;
 public class EmailAccount extends Account {
     private String email;
 
+    @Column(columnDefinition = "CHAR(60)")
     private String password;
 
     public EmailAccount(String email, String password) {
