@@ -16,9 +16,10 @@ public class AccountController {
 
     private final JoinService joinService;
 
-    @GetMapping("/login")
-    public String login(){
-        return "login";
+    @PostMapping("/login")
+    public ResponseEntity<JwtTokenDto> login(@RequestBody JoinDto joinDto){
+        JwtTokenDto token = joinService.loginByEmailAndPassword(joinDto);
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/join")
