@@ -18,7 +18,7 @@ import java.util.List;
 public class OAuthAccount extends Account {
     @Enumerated(EnumType.STRING)
     @Column(name = "oauth_type_code")
-    private OAuthType oauthType;
+    private OAuthType type;
 
     @Column(unique = true, nullable = false)
     private Long oauthNumber;
@@ -39,7 +39,7 @@ public class OAuthAccount extends Account {
     }
 
     public OAuthAccount(OAuthType oauthType, Long oauthNumber) {
-        this.oauthType = oauthType;
+        this.type = oauthType;
         this.oauthNumber = oauthNumber;
     }
 }

@@ -25,5 +25,5 @@ public class Reaction {
     @Column(name = "react_code")
     private ReactionType reactionType;
 
-    private boolean deleted;
+    private boolean isDeleted;
 }
