@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Board extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "board_id")
     private Long id;
 

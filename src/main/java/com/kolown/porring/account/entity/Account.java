@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 public abstract class Account extends BaseTimeEntity implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long accountId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
+    private Long id;
 }

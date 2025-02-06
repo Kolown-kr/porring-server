@@ -8,7 +8,7 @@ import java.util.Set;
 @Table(name = "accounts_follow")
 public class AccountFollow {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_follow_id", nullable = false)
     private Long id;
 
