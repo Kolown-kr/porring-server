@@ -1,13 +1,34 @@
 package com.kolown.porring.board.entity;
 
 import com.kolown.porring.account.entity.Account;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "reactions")
 @Getter
 public class Reaction {
+    @Embeddable
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ReactionId implements Serializable {
+        private Long boardId;
+        private Long accountId;
+    }
+
     @EmbeddedId
     private ReactionId id;
 
@@ -27,4 +48,6 @@ public class Reaction {
 
     @Column(name = "deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted;
+
+
 }
