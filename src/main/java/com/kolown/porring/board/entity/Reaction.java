@@ -14,12 +14,14 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SoftDelete;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "reactions")
 @Getter
+@SoftDelete(columnName = "deleted")
 public class Reaction {
     @Embeddable
     @Getter
@@ -46,8 +48,7 @@ public class Reaction {
     @Column(name = "react_code")
     private ReactionType reactionType;
 
-    @Column(name = "deleted", columnDefinition = "TINYINT(1)")
-    private boolean isDeleted;
-
+    @Column(name = "deleted", columnDefinition = "TINYINT(1) default 0")
+    private boolean deleteFlag;
 
 }
