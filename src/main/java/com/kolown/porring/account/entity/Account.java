@@ -1,21 +1,24 @@
 package com.kolown.porring.account.entity;
 
-import jakarta.persistence.*;
+import com.kolown.porring.common.BaseTimeEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Getter
-@EntityListeners(AuditingEntityListener.class)
+@Table(name = "accounts")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "sub_type")
-@Table(name = "accounts")
-public abstract class Account extends BaseTimeEntity {
+@Getter
+public abstract class Account extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
