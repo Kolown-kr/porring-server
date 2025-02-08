@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmailAccount extends Account {
+    @Column(columnDefinition = "VARCHAR(320)", name = "email", nullable = false)
     private String email;
 
     @Column(columnDefinition = "CHAR(60)")
@@ -35,6 +36,6 @@ public class EmailAccount extends Account {
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 }
