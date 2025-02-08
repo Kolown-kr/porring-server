@@ -18,8 +18,8 @@ CREATE TABLE `reaction_type`
 
 CREATE TABLE `accounts`
 (
-    `account_id` BIGINT      NOT NULL,
-    `sub_type`   VARCHAR(10) NOT NULL,
+    `account_id` BIGINT      NOT NULL AUTO_INCREMENT,
+    `sub_type`   VARCHAR(20) NOT NULL,
     `created_at` DATETIME    NOT NULL,
     `updated_at` DATETIME    NOT NULL,
     PRIMARY KEY (`account_id`)

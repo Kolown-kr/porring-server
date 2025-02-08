@@ -23,4 +23,8 @@ public abstract class Account extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
     private Long id;
+
+    @Column(name = "sub_type" ,insertable = false, updatable = false)
+    private String subType;
+
 }
