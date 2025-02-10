@@ -1,35 +1,37 @@
 package com.kolown.porring.account.entity;
 
-import jakarta.persistence.*;
-import java.util.Collection;
-import lombok.AccessLevel;
-import lombok.Builder;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "email_accounts")
+@DiscriminatorValue(value = "EMAIL")
 @Getter
-@DiscriminatorValue("email")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EmailAccount extends Account implements UserDetails {
+public class EmailAccount extends Account {
+    @Column(columnDefinition = "VARCHAR(320)", name = "email", nullable = false)
+    private String email;
+
+    @Column(columnDefinition = "CHAR(60)")
+    private String password;
 
     public EmailAccount(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    @Column(name = "email", nullable = false, length = 320)  // RFC 5321 기준
-    private String email;
-
-    @Column(name = "password", nullable = false,  columnDefinition = "CHAR(60)")  // BCrypt 해시 길이
-    private String password;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of();
     }
 
     @Override
