@@ -1,4 +1,4 @@
-package com.kolown.porring.security;
+package com.kolown.porring.security.dto;
 
 import lombok.Builder;
 import lombok.Getter;

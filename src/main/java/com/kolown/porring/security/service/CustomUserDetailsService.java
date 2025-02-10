@@ -1,5 +1,6 @@
-package com.kolown.porring.security;
+package com.kolown.porring.security.service;
 
+import com.kolown.porring.security.repository.EmailAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

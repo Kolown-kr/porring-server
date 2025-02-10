@@ -1,4 +1,4 @@
-package com.kolown.porring.security;
+package com.kolown.porring.security.repository;
 
 import com.kolown.porring.account.entity.EmailAccount;
 import java.util.Optional;

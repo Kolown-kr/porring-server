@@ -29,7 +29,7 @@ CREATE TABLE `oauth_accounts`
 (
     `account_id`      BIGINT      NOT NULL,
     `oauth_type_code` VARCHAR(10) NOT NULL,
-    `oauth_number`    BIGINT      NOT NULL,
+    `oauth_number`    VARCHAR(50) NOT NULL,
     PRIMARY KEY (`account_id`),
     FOREIGN KEY (`account_id`) REFERENCES `accounts` (`account_id`),
     FOREIGN KEY (`oauth_type_code`) REFERENCES `oauth_type` (`oauth_type_code`)

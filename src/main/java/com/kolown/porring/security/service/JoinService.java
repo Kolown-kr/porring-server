@@ -1,8 +1,10 @@
-package com.kolown.porring.security;
+package com.kolown.porring.security.service;
 
 import com.kolown.porring.account.entity.EmailAccount;
+import com.kolown.porring.security.dto.JoinDto;
+import com.kolown.porring.security.dto.JwtTokenDto;
+import com.kolown.porring.security.repository.EmailAccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
