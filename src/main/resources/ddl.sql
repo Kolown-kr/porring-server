@@ -74,7 +74,7 @@ CREATE TABLE `reactions`
     `board_id`   BIGINT      NOT NULL,
     `account_id` BIGINT      NOT NULL,
     `react_code` VARCHAR(10) NOT NULL,
-    `deleted`    TINYINT     NOT NULL,
+    `deleted`    BIT         NOT NULL DEFAULT 0,
     PRIMARY KEY (`board_id`, `account_id`),
     INDEX `idx_account` (`account_id`),
     FOREIGN KEY (`board_id`) REFERENCES `boards` (`board_id`),
