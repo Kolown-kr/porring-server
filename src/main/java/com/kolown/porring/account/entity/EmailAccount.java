@@ -4,12 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.util.Collection;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.AccessLevel;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -28,7 +27,7 @@ public class EmailAccount extends Account {
         this.email = email;
         this.password = password;
     }
-  
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

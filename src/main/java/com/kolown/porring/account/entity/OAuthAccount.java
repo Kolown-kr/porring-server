@@ -22,10 +22,10 @@ import java.util.List;
 public class OAuthAccount extends Account {
     @Enumerated(EnumType.STRING)
     @Column(name = "oauth_type_code")
-    private OAuthType type;
+    private OAuthType oauthType;
 
     @Column(unique = true, nullable = false)
-    private Long oauthNumber;
+    private String oauthNumber;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -34,16 +34,16 @@ public class OAuthAccount extends Account {
 
     @Override
     public String getPassword() {
-        return "";
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.oauthNumber;
     }
 
-    public OAuthAccount(OAuthType oauthType, Long oauthNumber) {
-        this.type = oauthType;
+    public OAuthAccount(OAuthType oauthType, String oauthNumber) {
+        this.oauthType = oauthType;
         this.oauthNumber = oauthNumber;
     }
 }

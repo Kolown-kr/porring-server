@@ -13,6 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
+        System.out.println(ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("서버 오류가 발생했습니다: " + ex.getMessage());
