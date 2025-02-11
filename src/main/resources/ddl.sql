@@ -82,4 +82,6 @@ CREATE TABLE `reactions`
     FOREIGN KEY (`react_code`) REFERENCES `reaction_type` (`react_code`)
 );
 
+INSERT INTO oauth_type (oauth_type_code) VALUES ('KAKAO'), ('NAVER'), ('GOOGLE');
+
 

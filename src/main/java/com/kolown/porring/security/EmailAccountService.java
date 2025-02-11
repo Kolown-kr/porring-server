@@ -1,8 +1,9 @@
-package com.kolown.porring.security.service;
+package com.kolown.porring.security;
 
 import com.kolown.porring.account.entity.EmailAccount;
 import com.kolown.porring.security.dto.JoinDto;
 import com.kolown.porring.security.dto.JwtTokenDto;
+import com.kolown.porring.security.jwt.JwtService;
 import com.kolown.porring.security.repository.EmailAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class JoinService {
+public class EmailAccountService {
 
     private final PasswordEncoder passwordEncoder;
     private final EmailAccountRepository emailAccountRepository;

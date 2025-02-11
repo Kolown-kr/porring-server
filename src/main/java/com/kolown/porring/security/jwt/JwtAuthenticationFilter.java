@@ -1,7 +1,7 @@
-package com.kolown.porring.security;
+package com.kolown.porring.security.jwt;
 
 
-import com.kolown.porring.security.service.JwtService;
+import com.kolown.porring.security.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.GenericFilter;
 import jakarta.servlet.ServletException;

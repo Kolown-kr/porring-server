@@ -34,12 +34,12 @@ public class OAuthAccount extends Account {
 
     @Override
     public String getPassword() {
-        return "";
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.oauthNumber;
     }
 
     public OAuthAccount(OAuthType oauthType, String oauthNumber) {

@@ -1,6 +1,7 @@
 package com.kolown.porring.security;
 
-import com.kolown.porring.security.service.JwtService;
+import com.kolown.porring.security.jwt.JwtAuthenticationFilter;
+import com.kolown.porring.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

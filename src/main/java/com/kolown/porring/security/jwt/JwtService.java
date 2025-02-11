@@ -1,4 +1,4 @@
-package com.kolown.porring.security.service;
+package com.kolown.porring.security.jwt;
 
 import com.kolown.porring.security.repository.EmailAccountRepository;
 import com.kolown.porring.security.repository.OauthAccountRepository;
