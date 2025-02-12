@@ -48,7 +48,4 @@ public class Reaction {
     @Column(name = "react_code")
     private ReactionType reactionType;
 
-    @Column(name = "deleted", columnDefinition = "TINYINT(1) default 0")
-    private boolean deleteFlag;
-
 }

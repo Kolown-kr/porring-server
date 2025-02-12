@@ -1,6 +1,8 @@
 package com.kolown.porring.security;
 
-import lombok.AllArgsConstructor;
+import com.kolown.porring.security.dto.JoinDto;
+import com.kolown.porring.security.dto.JwtTokenDto;
+import com.kolown.porring.security.service.JoinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,10 @@ public class AccountController {
 
     private final JoinService joinService;
 
-    @GetMapping("/login")
-    public String login(){
-        return "login";
+    @PostMapping("/login")
+    public ResponseEntity<JwtTokenDto> login(@RequestBody JoinDto joinDto){
+        JwtTokenDto token = joinService.loginByEmailAndPassword(joinDto);
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/join")
