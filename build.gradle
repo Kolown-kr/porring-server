@@ -24,6 +24,9 @@ repositories {
 }
 
 dependencies {
+	// Spring Devtools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	// Spring Boot Starters
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
