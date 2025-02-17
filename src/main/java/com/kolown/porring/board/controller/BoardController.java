@@ -35,7 +35,6 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 
     private final BoardService boardService;
-    private static final int FETCH_BOARD_COUNT = 10;
 
     /*
      * 이미지 처리는 API 는 보류
@@ -74,7 +73,7 @@ public class BoardController {
         // TODO : 자신이 만든 포스트는 추가해선 안되는 내용을 추가해야합니다.
         // 랜덤 게시물에 대한 페이지네이션이 추가되어야합니다.
         // 이 문제는 단순히 구현될 비즈니스 로직이 아니라서 논의를 해봐야할 것 같습니다.
-        var boards = boardService.getBoardsByRandom(FETCH_BOARD_COUNT);
+        var boards = boardService.getBoardsByRandom(pageSize);
 
         // 현재 당장 채울 수 없는 부분은 샘플 데이터 삽입해서 반환
         return ResponseEntity.ok(boards.stream().map(board -> BoardResponseDto.builder()
@@ -99,6 +98,7 @@ public class BoardController {
 
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> deleteBoard(@PathVariable("boardId") long boardId) {
+        boardService.deleteBoard(boardId);
         return ResponseEntity.ok("success");
     }
 
@@ -107,7 +107,7 @@ public class BoardController {
             @PathVariable("boardId") long boardId,
             @RequestBody UpdateBoardRequestDto updateBoardRequestDto) {
 
-        boardService.updateBoard(updateBoardRequestDto);
+        boardService.updateBoard(boardId, updateBoardRequestDto);
         return ResponseEntity.ok("success");
     }
 

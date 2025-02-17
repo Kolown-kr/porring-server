@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 public class UpdateBoardRequestDto {
 
-    public Long postId;
     public Optional<String> description;
     public Optional<List<String>> tags;
 

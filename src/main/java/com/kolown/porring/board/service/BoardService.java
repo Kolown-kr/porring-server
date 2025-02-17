@@ -30,15 +30,20 @@ public class BoardService {
     }
 
     // TODO : 후에 Account 체크 하면 좋을 것 같습니다.
-    public Board updateBoard(UpdateBoardRequestDto updateBoardRequestDto) {
+    public Board updateBoard(long boardId, UpdateBoardRequestDto updateBoardRequestDto) {
 
-        Board board = boardRepository.findById(updateBoardRequestDto.postId).orElseThrow();
+        Board board = boardRepository.findById(boardId).orElseThrow();
 
         if (!updateBoardRequestDto.getDescription().isEmpty()) {
             board.setDescription(updateBoardRequestDto.getDescription().orElseThrow());
         }
 
+        boardRepository.save(board);
         // TODO : Elastic Search 를 사용하진 않아서 태그를 어떻게 할지는 보류 상태
         return board;
+    }
+
+    public void deleteBoard(long boardId) {
+        boardRepository.deleteById(boardId);
     }
 }
