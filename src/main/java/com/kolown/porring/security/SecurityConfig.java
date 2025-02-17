@@ -1,6 +1,7 @@
 package com.kolown.porring.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kolown.porring.security.service.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.client.web.HttpSessionOAuth2Authoriza
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
@@ -26,6 +28,8 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
+    private final JwtService jwtService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,6 +52,8 @@ public class SecurityConfig {
             authorizeRequests.anyRequest().authenticated();
         });
 
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         http.oauth2Login(
                 oauth2Config -> {
                     oauth2Config.authorizationEndpoint(authorizationEndpointConfig -> {
@@ -69,9 +75,11 @@ public class SecurityConfig {
 
     private AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, authentication) -> {
+            String accessToken = jwtService.generateToken(authentication);
+
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "OAuth2 로그인 성공");
-            responseBody.put("accessToken", 123);
+            responseBody.put("accessToken", accessToken);
 
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
