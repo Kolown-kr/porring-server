@@ -37,7 +37,7 @@ CREATE TABLE `oauth_accounts`
 
 CREATE TABLE `email_accounts`
 (
-    `account_id` BIGINT       NOT NULL,
+    `account_id` BIGINT       NOT NULL AUTO_INCREMENT,
     `email`      VARCHAR(320) NOT NULL,
     `password`   CHAR(60)     NOT NULL,
     PRIMARY KEY (`account_id`),
@@ -46,7 +46,7 @@ CREATE TABLE `email_accounts`
 
 CREATE TABLE `accounts_follow`
 (
-    `account_follow_id` BIGINT       NOT NULL,
+    `account_follow_id` BIGINT       NOT NULL AUTO_INCREMENT,
     `follower_id`       BIGINT       NOT NULL,
     `followee_id`       BIGINT       NOT NULL,
     `nickname`          VARCHAR(255) NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `accounts_follow`
 
 CREATE TABLE `boards`
 (
-    `board_id`    BIGINT   NOT NULL,
+    `board_id`    BIGINT   NOT NULL AUTO_INCREMENT,
     `account_id`  BIGINT   NOT NULL,
     `img_urls`    TEXT     NULL,
     `description` TEXT     NULL,
@@ -82,4 +82,4 @@ CREATE TABLE `reactions`
     FOREIGN KEY (`react_code`) REFERENCES `reaction_type` (`react_code`)
 );
 
-
+INSERT INTO oauth_type (oauth_type_code) VALUES ('KAKAO'), ('NAVER'), ('GOOGLE');
