@@ -2,6 +2,7 @@ package com.kolown.porring.board.entity;
 
 import com.kolown.porring.account.entity.Account;
 import com.kolown.porring.common.BaseTimeEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +15,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "boards")
@@ -33,6 +35,7 @@ public class Board extends BaseTimeEntity {
     private String imgUrls;
 
     @Column
+    @Setter
     private String description;
 
     public Board(Account account, String imgUrls, String description) {

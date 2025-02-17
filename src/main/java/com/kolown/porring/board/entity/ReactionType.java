@@ -1,5 +1,5 @@
 package com.kolown.porring.board.entity;
 
 public enum ReactionType {
-    LIKE, LOVE
+    LOVE, SURPRISE, SMILE, STAR, THUMB, HEART
 }
