@@ -1,16 +1,17 @@
 package com.kolown.porring.common.seed;
 
-import com.kolown.porring.account.entity.EmailAccount;
+import java.util.ArrayList;
 
-import com.kolown.porring.board.dto.request.CreateBoardRequestDto;
-import com.kolown.porring.board.service.BoardService;
-import com.kolown.porring.security.repository.EmailAccountRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import com.kolown.porring.account.entity.EmailAccount;
+import com.kolown.porring.board.dto.request.CreateBoardRequestDto;
+import com.kolown.porring.board.service.BoardService;
+import com.kolown.porring.security.repository.EmailAccountRepository;
+
+import lombok.RequiredArgsConstructor;
 
 /*
  * Develop 환경을 위한 샘플 데이터 시딩을 위한 클래스
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 @Profile("dev")
 @RequiredArgsConstructor
 public class DevDataInjector implements CommandLineRunner {
+
     private final BoardService boardService;
     private final EmailAccountRepository emailAccountRepository;
 
@@ -33,17 +35,18 @@ public class DevDataInjector implements CommandLineRunner {
         var user = new EmailAccount("test@naver.com", "test1234");
 
         emailAccountRepository.save(user);
-        /* 샘플 포스트 작성 (20개 정도)
+        /*
+         * 샘플 포스트 작성 (20개 정도)
          * 샘플 데이터 이미지 URL 은 전부 플레이스 홀더 이미지이다.
          * 썸네일 및 갤러리 이미지는 아래에 해당된다.
          *
-         * 원본이미지 링크    https://placehold.co/1200x900/png
-         * 썸네일이미지 링크  https://placehold.co/300x300/png
-         * 갤러리이미지 링크  https://placehold.co/400x300/png
+         * 원본이미지 링크 https://placehold.co/1200x900/png
+         * 썸네일이미지 링크 https://placehold.co/300x300/png
+         * 갤러리이미지 링크 https://placehold.co/400x300/png
          * 안드로이드 요청을 반영한 결과이므로 실제 API에서도 위처럼 적용되어야한다.
          *
          */
-        for (int i = 0; i <20; ++i) {
+        for (int i = 0; i < 20; ++i) {
             var tags = new ArrayList<String>();
             tags.add("tag" + i);
 
@@ -57,6 +60,6 @@ public class DevDataInjector implements CommandLineRunner {
                     .build();
 
             boardService.createBoard(createBoardDto, user);
-        };
+        }
     }
 }
