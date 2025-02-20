@@ -9,7 +9,6 @@ import com.kolown.porring.board.repository.ReactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +18,7 @@ public class ReactionService {
     private final BoardRepository boardRepository;
 
     public List<Reaction> getAllReactionsByBoardId(Long boardId) {
-        return reactionRepository.findByBoardId(boardId);
+        return reactionRepository.findByIdBoardId(boardId);
     }
 
     public Reaction createReaction(Account account, long boardId, ReactionRequestDto reactionRequestDto) {
