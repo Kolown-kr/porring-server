@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "boards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,12 +37,19 @@ public class Board extends BaseTimeEntity {
     private String imgUrls;
 
     @Column
-    @Setter
     private String description;
 
     public Board(Account account, String imgUrls, String description) {
         this.account = account;
         this.imgUrls = imgUrls;
+        this.description = description;
+    }
+    
+    public void setTags(List<String> tags) {
+        return;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
     }
 }
