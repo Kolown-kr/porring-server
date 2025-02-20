@@ -9,9 +9,8 @@ import java.util.List;
 @Builder
 @Getter
 public class CreateBoardRequestDto {
-    public String imageUrl; // 4:3 비율 + 선명
-    public String thumbnailUrl; // 정사각형 비율 + 덜 선명
-    public String galleryUrl; // 목록 보기용 - 4:3 비율 + 덜 선명
+    // TODO: 원본 이미지를 받고, 썸네일용, 갤러리용 이미지를 반환할 필요가 있음
+    public String imageUrl;
     public String description;
     public List<String> tags;
 }

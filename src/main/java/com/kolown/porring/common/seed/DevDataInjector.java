@@ -54,8 +54,6 @@ public class DevDataInjector implements CommandLineRunner {
                     .builder()
                     .description("테스트 데이터 " + i)
                     .imageUrl("https://placehold.co/1200x900/png")
-                    .thumbnailUrl("https://placehold.co/300x300/png")
-                    .galleryUrl("https://placehold.co/400x300/png")
                     .tags(tags)
                     .build();
 
