@@ -37,7 +37,7 @@ CREATE TABLE `oauth_accounts`
 
 CREATE TABLE `email_accounts`
 (
-    `account_id` BIGINT       NOT NULL AUTO_INCREMENT,
+    `account_id` BIGINT       NOT NULL,
     `email`      VARCHAR(320) NOT NULL,
     `password`   CHAR(60)     NOT NULL,
     PRIMARY KEY (`account_id`),
