@@ -3,7 +3,7 @@ package com.kolown.porring.security.service;
 import com.kolown.porring.account.entity.EmailAccount;
 import com.kolown.porring.security.dto.JoinDto;
 import com.kolown.porring.security.dto.JwtTokenDto;
-import com.kolown.porring.security.repository.EmailAccountRepository;
+import com.kolown.porring.account.repository.EmailAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

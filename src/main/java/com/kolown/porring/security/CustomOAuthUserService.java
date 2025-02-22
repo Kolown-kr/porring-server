@@ -2,8 +2,8 @@ package com.kolown.porring.security;
 
 import com.kolown.porring.account.entity.OAuthAccount;
 import com.kolown.porring.account.entity.OAuthType;
-import com.kolown.porring.security.repository.EmailAccountRepository;
-import com.kolown.porring.security.repository.OauthAccountRepository;
+import com.kolown.porring.account.repository.EmailAccountRepository;
+import com.kolown.porring.account.repository.OauthAccountRepository;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
