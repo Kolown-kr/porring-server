@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,7 +42,7 @@ public class OAuthAccount extends Account implements OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return new HashMap<>();
     }
 
     @Override
