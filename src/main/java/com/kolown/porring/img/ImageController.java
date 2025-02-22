@@ -17,9 +17,10 @@ public class ImageController {
     private final S3Service s3Service;
 
     @PostMapping("")
-    public ResponseEntity<String> uploadImg(@RequestPart("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<ImageUploadResponseDTO> uploadImg(@RequestPart("file") MultipartFile multipartFile)
+            throws IOException {
         String url = s3Service.uploadFile(multipartFile);
-        return ResponseEntity.ok(url);
+        return ResponseEntity.ok(new ImageUploadResponseDTO(url));
     }
 
 }
