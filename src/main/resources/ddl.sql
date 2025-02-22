@@ -50,9 +50,11 @@ CREATE TABLE `accounts_follow`
     `follower_id`       BIGINT       NOT NULL,
     `followee_id`       BIGINT       NOT NULL,
     `nickname`          VARCHAR(255) NOT NULL,
+    `deleted`           TINYINT(1)   NOT NULL DEFAULT 0,
     PRIMARY KEY (`account_follow_id`),
     INDEX `idx_follower` (`follower_id`),
     INDEX `idx_followee` (`followee_id`),
+    INDEX `idx_follower_followee` (`follower_id`, `followee_id`),
     FOREIGN KEY (`follower_id`) REFERENCES `accounts` (`account_id`),
     FOREIGN KEY (`followee_id`) REFERENCES `accounts` (`account_id`)
 );
