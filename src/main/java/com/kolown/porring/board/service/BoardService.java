@@ -35,11 +35,11 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow();
 
         if (updateBoardRequestDto.getDescription() != null) {
-            board.setDescription(updateBoardRequestDto.getDescription());
+            board.updateDescription(updateBoardRequestDto.getDescription());
         }
 
         if (updateBoardRequestDto.getTags() != null) {
-            board.setTags(updateBoardRequestDto.getTags());
+            board.replaceTags(updateBoardRequestDto.getTags());
         }
 
         boardRepository.save(board);

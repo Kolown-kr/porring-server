@@ -45,11 +45,11 @@ public class Board extends BaseTimeEntity {
         this.description = description;
     }
     
-    public void setTags(List<String> tags) {
+    public void replaceTags(List<String> tags) {
         return;
     }
 
-    public void setDescription(String description) {
+    public void updateDescription(String description) {
         this.description = description;
     }
 }
