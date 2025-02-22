@@ -51,7 +51,7 @@ public class SecurityConfig {
         });
 
         http.authorizeHttpRequests(authorizeRequests -> {
-            authorizeRequests.requestMatchers("/accounts/join", "/accounts/login", "/oauth2/**").permitAll();
+            authorizeRequests.requestMatchers("/accounts/join", "/accounts/login", "/oauth2/**", "/imgs/**").permitAll();
             authorizeRequests.requestMatchers(HttpMethod.GET, "/boards").permitAll();
             authorizeRequests.anyRequest().authenticated();
         });
