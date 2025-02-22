@@ -12,8 +12,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SoftDelete;
 
 import java.io.Serializable;
@@ -22,10 +24,12 @@ import java.io.Serializable;
 @Table(name = "reactions")
 @Getter
 @SoftDelete(columnName = "deleted")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reaction {
     @Embeddable
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     public static class ReactionId implements Serializable {
         private Long boardId;
         private Long accountId;
@@ -46,6 +50,12 @@ public class Reaction {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "react_code")
+    @Setter
     private ReactionType reactionType;
 
+    public Reaction(Board board, Account account, ReactionType reactionType) {
+        this.board = board;
+        this.account = account;
+        this.reactionType = reactionType;
+    }
 }

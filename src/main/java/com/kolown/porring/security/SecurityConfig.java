@@ -52,7 +52,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorizeRequests -> {
             authorizeRequests.requestMatchers("/accounts/join", "/accounts/login", "/oauth2/**").permitAll();
-            authorizeRequests.requestMatchers(HttpMethod.GET, "/boards").permitAll();
+            authorizeRequests.requestMatchers(HttpMethod.GET, "/boards/list").permitAll();
+            authorizeRequests.requestMatchers(HttpMethod.GET, "/boards/tags").permitAll();
             authorizeRequests.anyRequest().authenticated();
         });
 
