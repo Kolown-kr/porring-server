@@ -30,4 +30,9 @@ public class AccountController {
         return ResponseEntity.ok("success");
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> test(){
+        return ResponseEntity.ok("test");
+    }
+
 }
