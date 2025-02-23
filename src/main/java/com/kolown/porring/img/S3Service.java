@@ -54,4 +54,6 @@ public class S3Service {
         return fileName.substring(fileName.lastIndexOf(".")); // 확장자 유지
     }
 
+    //TODO S3 오브젝트 삭제 로직 필요
+
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -18,7 +19,7 @@ public class ImageController {
 
     @PostMapping("")
     public ResponseEntity<ImageUploadResponseDTO> uploadImg(@RequestPart("file") MultipartFile multipartFile)
-            throws IOException {
+            throws IOException, MaxUploadSizeExceededException {
         String url = s3Service.uploadFile(multipartFile);
         return ResponseEntity.ok(new ImageUploadResponseDTO(url));
     }
