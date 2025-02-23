@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import com.kolown.porring.board.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    @Query(value = "SELECT * FROM boards ORDER BY RAND() LIMIT :fetchCount", nativeQuery = true)
-    List<Board> findRandomBoards(@Param("fetchCount") int fetchCount);
+    @Query(value = "SELECT * FROM boards WHERE account_id != :accountId ORDER BY RAND() LIMIT :fetchCount", nativeQuery = true)
+    List<Board> findRandomBoardsOfOthers(@Param("fetchCount") int fetchCount, @Param("accountId") Long accountId);
+
+    List<Board> findByAccountId(Long accountId);
 }
