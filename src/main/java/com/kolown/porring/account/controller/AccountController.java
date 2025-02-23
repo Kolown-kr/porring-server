@@ -1,28 +1,29 @@
 package com.kolown.porring.account.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.kolown.porring.account.dto.request.CreateFollowRequest;
 import com.kolown.porring.account.dto.request.UpdateFollowNicknameRequest;
-import com.kolown.porring.account.dto.response.GetFollowingResponse;
-import com.kolown.porring.account.dto.response.GetNicknameResponse;
+import com.kolown.porring.account.dto.response.NicknameAndPostsResponse;
+import com.kolown.porring.account.dto.response.NicknameResponse;
 import com.kolown.porring.account.entity.Account;
 import com.kolown.porring.account.service.AccountFollowService;
 import com.kolown.porring.security.dto.JoinDto;
 import com.kolown.porring.security.dto.JwtTokenDto;
 import com.kolown.porring.security.service.JoinService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,23 +49,19 @@ public class AccountController {
     public ResponseEntity<String> createFollow(
             @PathVariable Long targetId,
             @RequestBody CreateFollowRequest createFollowRequest,
-            @AuthenticationPrincipal Account account
-    ) {
+            @AuthenticationPrincipal Account account) {
         accountFollowService.createFollow(
                 account.getId(),
                 targetId,
-                createFollowRequest.getUsername()
-        );
+                createFollowRequest.getUsername());
 
         return ResponseEntity.ok("success");
     }
 
-
     @GetMapping("/{targetId}")
-    public ResponseEntity<GetNicknameResponse> getNickname(
+    public ResponseEntity<NicknameResponse> getNickname(
             @PathVariable Long targetId,
-            @AuthenticationPrincipal Account account
-    ) {
+            @AuthenticationPrincipal Account account) {
         return ResponseEntity.ok(accountFollowService.getNickname(account.getId(), targetId));
     }
 
@@ -72,13 +69,11 @@ public class AccountController {
     public ResponseEntity<String> updateFollowNickname(
             @PathVariable Long targetId,
             @RequestBody UpdateFollowNicknameRequest updateFollowNicknameRequest,
-            @AuthenticationPrincipal Account account
-    ) {
+            @AuthenticationPrincipal Account account) {
         accountFollowService.updateNickname(
                 account.getId(),
                 targetId,
-                updateFollowNicknameRequest.getNickname()
-        );
+                updateFollowNicknameRequest.getNickname());
 
         return ResponseEntity.ok("success");
     }
@@ -86,16 +81,14 @@ public class AccountController {
     @DeleteMapping("/{targetId}/follow")
     public ResponseEntity<String> deleteFollow(
             @PathVariable Long targetId,
-            @AuthenticationPrincipal Account account
-    ) {
+            @AuthenticationPrincipal Account account) {
         accountFollowService.deleteFollow(account.getId(), targetId);
         return ResponseEntity.ok("success");
     }
 
     @GetMapping("/followings")
-    public ResponseEntity<List<GetFollowingResponse>> getMyFollowers(
-            @AuthenticationPrincipal Account account
-    ) {
+    public ResponseEntity<List<NicknameAndPostsResponse>> getMyFollowers(
+            @AuthenticationPrincipal Account account) {
         return ResponseEntity.ok(accountFollowService.getFollowingListById(account.getId()));
     }
 
