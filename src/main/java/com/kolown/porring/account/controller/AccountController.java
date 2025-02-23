@@ -2,6 +2,7 @@ package com.kolown.porring.account.controller;
 
 import java.util.List;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kolown.porring.account.dto.request.CreateFollowRequest;
-import com.kolown.porring.account.dto.request.UpdateFollowNicknameRequest;
+import com.kolown.porring.account.dto.request.NicknameRequest;
 import com.kolown.porring.account.dto.response.NicknameAndPostsResponse;
 import com.kolown.porring.account.dto.response.NicknameResponse;
 import com.kolown.porring.account.entity.Account;
@@ -48,14 +48,19 @@ public class AccountController {
     @PostMapping("/{targetId}/follow")
     public ResponseEntity<String> createFollow(
             @PathVariable Long targetId,
-            @RequestBody CreateFollowRequest createFollowRequest,
+            @RequestBody NicknameRequest nicknameRequest,
             @AuthenticationPrincipal Account account) {
-        accountFollowService.createFollow(
-                account.getId(),
-                targetId,
-                createFollowRequest.getUsername());
 
-        return ResponseEntity.ok("success");
+        try {
+            accountFollowService.createFollow(
+                    account.getId(),
+                    targetId,
+                    nicknameRequest.getNickname());
+            return ResponseEntity.ok("success");
+        } catch (BadRequestException exception) {
+            return ResponseEntity.badRequest().body("bad request");
+        }
+
     }
 
     @GetMapping("/{targetId}")
@@ -68,12 +73,12 @@ public class AccountController {
     @PutMapping("/{targetId}/follow/nickname")
     public ResponseEntity<String> updateFollowNickname(
             @PathVariable Long targetId,
-            @RequestBody UpdateFollowNicknameRequest updateFollowNicknameRequest,
+            @RequestBody NicknameRequest nicknameRequest,
             @AuthenticationPrincipal Account account) {
         accountFollowService.updateNickname(
                 account.getId(),
                 targetId,
-                updateFollowNicknameRequest.getNickname());
+                nicknameRequest.getNickname());
 
         return ResponseEntity.ok("success");
     }
@@ -82,6 +87,7 @@ public class AccountController {
     public ResponseEntity<String> deleteFollow(
             @PathVariable Long targetId,
             @AuthenticationPrincipal Account account) {
+
         accountFollowService.deleteFollow(account.getId(), targetId);
         return ResponseEntity.ok("success");
     }
@@ -89,6 +95,7 @@ public class AccountController {
     @GetMapping("/followings")
     public ResponseEntity<List<NicknameAndPostsResponse>> getMyFollowers(
             @AuthenticationPrincipal Account account) {
+
         return ResponseEntity.ok(accountFollowService.getFollowingListById(account.getId()));
     }
 
