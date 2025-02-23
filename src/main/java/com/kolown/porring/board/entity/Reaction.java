@@ -58,4 +58,8 @@ public class Reaction {
         this.account = account;
         this.reactionType = reactionType;
     }
+
+    public void updateReaction(ReactionType reactionType) {
+        this.reactionType = reactionType;
+    }
 }
