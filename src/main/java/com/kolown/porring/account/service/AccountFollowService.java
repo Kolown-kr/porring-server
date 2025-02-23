@@ -1,21 +1,23 @@
 package com.kolown.porring.account.service;
 
-import com.kolown.porring.account.dto.response.GetFollowingResponse;
-import com.kolown.porring.account.dto.response.GetNicknameResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.coyote.BadRequestException;
+import org.springframework.stereotype.Service;
+
+import com.kolown.porring.account.dto.response.NicknameAndPostsResponse;
+import com.kolown.porring.account.dto.response.NicknameResponse;
 import com.kolown.porring.account.entity.Account;
 import com.kolown.porring.account.entity.AccountFollow;
 import com.kolown.porring.account.repository.AccountFollowRepository;
 import com.kolown.porring.account.repository.AccountRepository;
 import com.kolown.porring.board.repository.BoardRepository;
-
 import com.kolown.porring.board.service.BoardService;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,9 +28,13 @@ public class AccountFollowService {
     private final BoardService boardService;
 
     @Transactional
-    public void createFollow(Long followerId, Long followeeId, String nickname) {
+    public void createFollow(Long followerId, Long followeeId, String nickname) throws BadRequestException {
         Account follower = accountRepository.findById(followerId).orElseThrow();
         Account followee = accountRepository.findById(followeeId).orElseThrow();
+
+        if (follower.getId() == followee.getId()) {
+            throw new BadRequestException("자기 자신을 팔로우할 수 없습니다.");
+        }
 
         Optional<AccountFollow> accountFollow = accountFollowRepository
                 .findByFollowerIdAndFolloweeIdWithDeleted(followerId, followeeId);
@@ -49,27 +55,26 @@ public class AccountFollowService {
                 .findByFollowerIdAndFolloweeId(followerId, followeeId)
                 .orElseThrow();
 
-
         // TODO: Soft delete 되지 않고 진짜 지우고 있음
         accountFollowRepository.delete(followData);
     }
 
-    public GetNicknameResponse getNickname(Long followerId, Long followeeId) {
+    public NicknameResponse getNickname(Long followerId, Long followeeId) {
         var accountFollow = accountFollowRepository
                 .findByFollowerIdAndFolloweeId(followerId, followeeId)
                 .orElseThrow();
-        return new GetNicknameResponse(accountFollow.getNickname());
+        return new NicknameResponse(accountFollow.getNickname());
     }
 
-    public List<GetFollowingResponse> getFollowingListById(Long id) {
+    public List<NicknameAndPostsResponse> getFollowingListById(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         List<AccountFollow> followings = accountFollowRepository.findByFollowerId(account.getId());
-        List<GetFollowingResponse> followingResponses = new ArrayList<>();
+        List<NicknameAndPostsResponse> followingResponses = new ArrayList<>();
 
         for (AccountFollow following : followings) {
             var posts = boardService.getTop4BoardsByAccountId(following.getFollowee().getId());
 
-            followingResponses.add(GetFollowingResponse
+            followingResponses.add(NicknameAndPostsResponse
                     .builder()
                     .nickname(following.getNickname())
                     .posts(posts)
