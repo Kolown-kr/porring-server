@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,19 +24,19 @@ public class ReactionService {
 
     public List<ReactionType> getBoardReactionList(Long boardId) {
 
-        Set<ReactionType> reactionMap = new HashSet<>();
+        Set<ReactionType> reactionSet = new HashSet<>();
 
         reactionRepository.findByBoardId(boardId).forEach(reaction -> {
-            reactionMap.add(reaction.getReactionType());
+            reactionSet.add(reaction.getReactionType());
         });
 
-        return new ArrayList<>(reactionMap);
+        return new ArrayList<>(reactionSet);
     }
 
     public ReactionType getBoardReactionOfAccount(Long boardId, Account account) {
         return reactionRepository
             .findByAccountIdAndBoardId(account.getId(), boardId)
-            .orElse(null)
+            .orElseThrow()
             .getReactionType();
     }
 
@@ -58,7 +57,7 @@ public class ReactionService {
         Optional<Reaction> reaction = reactionRepository
             .findByAccountIdAndBoardIdWithDeleted(boardId, account.getId());
 
-        if (!reaction.isPresent()) {
+        if (reaction.isEmpty()) {
             Reaction newReaction = new Reaction(board, account, reactionRequestDto.getReactionType());
             reactionRepository.save(newReaction);
             return;
