@@ -2,6 +2,7 @@ package com.kolown.porring.board.service;
 
 import com.kolown.porring.account.entity.AccountFollow;
 import com.kolown.porring.account.repository.AccountFollowRepository;
+import com.kolown.porring.board.exception.BoardPermissionException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -76,12 +77,13 @@ public class BoardService {
 
     // TODO : 후에 Account 체크 하면 좋을 것 같습니다.
     @Transactional
-    public Board updateBoard(long boardId, UpdateBoardRequestDto updateBoardRequestDto, Account account) {
+    public Board updateBoard(long boardId, UpdateBoardRequestDto updateBoardRequestDto, Account account)
+        throws BoardPermissionException {
 
         Board board = boardRepository.findById(boardId).orElseThrow();
 
         if (!validateBoardPermissions(board, account)) {
-            throw new Error("You are not allowed to update this board");
+            throw new BoardPermissionException();
         }
 
         if (updateBoardRequestDto.getDescription() != null) {
@@ -98,11 +100,11 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(long boardId, Account account) {
+    public void deleteBoard(long boardId, Account account) throws BoardPermissionException {
         Board board = boardRepository.findById(boardId).orElseThrow();
 
         if (!validateBoardPermissions(board, account)) {
-            throw new Error("You are not allowed to delete this board");
+            throw new BoardPermissionException();
         }
 
         boardRepository.deleteById(boardId);

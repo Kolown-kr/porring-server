@@ -1,11 +1,16 @@
 package com.kolown.porring.board.controller;
 
+import com.kolown.porring.board.exception.BoardPermissionException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import java.util.Map;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +62,6 @@ public class BoardController {
     ) {
         // TODO : 랜덤 게시물에 대한 페이지네이션이 추가되어야합니다.
         var boards = boardService.getBoardsByRandom(pageSize, account);
-
         return ResponseEntity.ok(boards);
     }
 
@@ -71,13 +75,9 @@ public class BoardController {
     public ResponseEntity<String> deleteBoard(
         @PathVariable("boardId") long boardId,
         @AuthenticationPrincipal Account account
-    ) {
-        try {
-            boardService.deleteBoard(boardId, account);
-            return ResponseEntity.ok("success");
-        } catch (Error e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    ) throws BoardPermissionException {
+        boardService.deleteBoard(boardId, account);
+        return ResponseEntity.ok("success");
     }
 
     @PatchMapping("/{boardId}")
@@ -85,13 +85,9 @@ public class BoardController {
         @PathVariable("boardId") long boardId,
         @RequestBody UpdateBoardRequestDto updateBoardRequestDto,
         @AuthenticationPrincipal Account account
-    ) {
-        try {
-            boardService.updateBoard(boardId, updateBoardRequestDto, account);
-            return ResponseEntity.ok("success");
-        } catch (Error e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    ) throws BoardPermissionException {
+        boardService.updateBoard(boardId, updateBoardRequestDto, account);
+        return ResponseEntity.ok("success");
     }
 
     @PutMapping("/{boardId}/reaction")
@@ -102,5 +98,14 @@ public class BoardController {
     ) {
         reactionService.updateBoardReaction(boardId, account, reactionRequestDto);
         return ResponseEntity.ok("success");
+    }
+
+    @ExceptionHandler(value = BoardPermissionException.class)
+    public ResponseEntity<Map<String, String>> handleBoardPermissionException(BoardPermissionException e) {
+        Map<String, String> map = new HashMap<>();
+        map.put("error type", e.getStatus().getReasonPhrase());
+        map.put("code", Integer.toString(e.getStatus().value()));
+        map.put("message", e.getMessage());
+        return new ResponseEntity<>(map, e.getStatus());
     }
 }
