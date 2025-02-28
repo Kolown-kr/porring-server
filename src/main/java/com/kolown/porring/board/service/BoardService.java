@@ -1,23 +1,24 @@
 package com.kolown.porring.board.service;
 
+import com.kolown.porring.account.entity.Account;
 import com.kolown.porring.account.entity.AccountFollow;
 import com.kolown.porring.account.repository.AccountFollowRepository;
 import com.kolown.porring.board.exception.BoardPermissionException;
+import com.kolown.porring.board.dto.request.CreateBoardRequestDto;
+import com.kolown.porring.board.dto.response.BoardResponseDto;
+import com.kolown.porring.board.dto.request.UpdateBoardRequestDto;
+import com.kolown.porring.board.entity.ReactionType;
+import com.kolown.porring.board.entity.Board;
+import com.kolown.porring.board.repository.BoardRepository;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.kolown.porring.board.dto.response.BoardResponseDto;
-import com.kolown.porring.board.entity.ReactionType;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
 
-import com.kolown.porring.account.entity.Account;
-import com.kolown.porring.board.dto.request.CreateBoardRequestDto;
-import com.kolown.porring.board.dto.request.UpdateBoardRequestDto;
-import com.kolown.porring.board.entity.Board;
-import com.kolown.porring.board.repository.BoardRepository;
+import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 
@@ -73,6 +74,20 @@ public class BoardService {
                 .myReaction(myReaction)
                 .build();
         }).collect(Collectors.toList());
+    }
+
+    public List<BoardResponseDto> getTop4BoardsByAccountId(long accountId) {
+        return boardRepository.findTop4ByAccountIdOrderByCreatedAtDesc(accountId)
+                .stream()
+                .map((board -> BoardResponseDto.builder()
+                        .postId(board.getId())
+                        .imageUrl(board.getImgUrls())
+                        .isFollower(true)
+                        .myReaction(ReactionType.HEART)
+                        .authorId(board.getAccount().getId())
+                        .reactions(Arrays.asList(ReactionType.HEART, ReactionType.LOVE)).build()
+                ))
+                .collect(Collectors.toList());
     }
 
     // TODO : 후에 Account 체크 하면 좋을 것 같습니다.

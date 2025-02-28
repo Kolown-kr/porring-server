@@ -1,6 +1,7 @@
 package com.kolown.porring.account.repository;
 
 import com.kolown.porring.account.entity.AccountFollow;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,12 +21,12 @@ public interface AccountFollowRepository extends JpaRepository<AccountFollow, Lo
      * Soft 삭제된 레코드를 포함하여 조회하는 메서드
      */
     @Query(value = """
-        SELECT * FROM accounts_follow f
-                    WHERE f.follower_id = :followerId AND f.followee_id = :followeeId
-        """, nativeQuery = true)
+            SELECT * FROM accounts_follow f
+                        WHERE f.follower_id = :followerId AND f.followee_id = :followeeId
+            """, nativeQuery = true)
     Optional<AccountFollow> findByFollowerIdAndFolloweeIdWithDeleted(
-        @Param("followerId") Long followerId,
-        @Param("followeeId") Long followeeId
+            @Param("followerId") Long followerId,
+            @Param("followeeId") Long followeeId
     );
 
     @Modifying
