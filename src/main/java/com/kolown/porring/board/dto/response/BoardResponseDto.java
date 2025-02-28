@@ -19,4 +19,5 @@ public class BoardResponseDto {
     public boolean isFollower;
     public List<ReactionType> reactions;
     public ReactionType myReaction;
+    public List<String> tags;
 }

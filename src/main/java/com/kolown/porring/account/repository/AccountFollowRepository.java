@@ -1,7 +1,7 @@
 package com.kolown.porring.account.repository;
 
 import com.kolown.porring.account.entity.AccountFollow;
-import org.hibernate.annotations.Filter;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
