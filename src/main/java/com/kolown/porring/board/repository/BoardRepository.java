@@ -11,4 +11,6 @@ import com.kolown.porring.board.entity.Board;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query(value = "SELECT * FROM boards ORDER BY RAND() LIMIT :fetchCount", nativeQuery = true)
     List<Board> findRandomBoards(@Param("fetchCount") int fetchCount);
+
+    List<Board> findTop4ByAccountIdOrderByCreatedAtDesc(Long id);
 }

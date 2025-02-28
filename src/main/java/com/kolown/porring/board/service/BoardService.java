@@ -1,7 +1,12 @@
 package com.kolown.porring.board.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.kolown.porring.board.dto.response.BoardResponseDto;
+import com.kolown.porring.board.entity.ReactionType;
 import org.springframework.stereotype.Service;
 
 import com.kolown.porring.account.entity.Account;
@@ -27,6 +32,20 @@ public class BoardService {
 
     public List<Board> getBoardsByRandom(int count) {
         return boardRepository.findRandomBoards(count);
+    }
+
+    public List<BoardResponseDto> getTop4BoardsByAccountId(long accountId) {
+        return boardRepository.findTop4ByAccountIdOrderByCreatedAtDesc(accountId)
+                .stream()
+                .map((board -> BoardResponseDto.builder()
+                        .postId(board.getId())
+                        .imageUrl(board.getImgUrls())
+                        .isFollower(true)
+                        .myReaction(ReactionType.HEART)
+                        .authorId(board.getAccount().getId())
+                        .reactions(Arrays.asList(ReactionType.HEART, ReactionType.LOVE)).build()
+                ))
+                .collect(Collectors.toList());
     }
 
     // TODO : 후에 Account 체크 하면 좋을 것 같습니다.

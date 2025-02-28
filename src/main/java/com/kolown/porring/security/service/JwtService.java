@@ -1,7 +1,7 @@
 package com.kolown.porring.security.service;
 
-import com.kolown.porring.security.repository.EmailAccountRepository;
-import com.kolown.porring.security.repository.OauthAccountRepository;
+import com.kolown.porring.account.repository.EmailAccountRepository;
+import com.kolown.porring.account.repository.OauthAccountRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -9,8 +9,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.persistence.DiscriminatorValue;
+
 import java.security.Key;
 import java.util.Date;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

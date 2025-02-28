@@ -1,7 +1,9 @@
-package com.kolown.porring.security.repository;
+package com.kolown.porring.account.repository;
 
 import com.kolown.porring.account.entity.OAuthAccount;
+
 import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
