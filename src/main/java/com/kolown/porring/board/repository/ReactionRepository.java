@@ -21,20 +21,20 @@ public interface ReactionRepository extends JpaRepository<Reaction, Reaction.Rea
     Optional<Reaction> findByAccountIdAndBoardId(@Param("accountId") Long accountId, @Param("boardId") Long boardId);
 
     @Query(value = "SELECT * FROM reactions r " +
-            "WHERE r.board_id = :boardId AND r.account_id = :accountId",
-            nativeQuery = true)
-    Optional<Reaction> findByAccountIdAndBoardIdWithDeleted(
-            @Param("boardId") Long boardId,
-            @Param("accountId") Long accountId
+        "WHERE r.board_id = :boardId AND r.account_id = :accountId",
+        nativeQuery = true)
+    Optional<Reaction> findByBoardIdAndAccountIdWithDeleted(
+        @Param("boardId") Long boardId,
+        @Param("accountId") Long accountId
     );
 
     @Modifying
     @Query(value =
-            "UPDATE reactions SET deleted = false, react_code = :reactionType " +
-                    "WHERE board_id = :boardId AND account_id = :accountId", nativeQuery = true)
+        "UPDATE reactions SET deleted = false, react_code = :reactionType " +
+            "WHERE board_id = :boardId AND account_id = :accountId", nativeQuery = true)
     void restoreReaction(
-            @Param("boardId") Long boardId,
-            @Param("accountId") Long accountId,
-            @Param("reactionType") ReactionType reactionType
+        @Param("boardId") Long boardId,
+        @Param("accountId") Long accountId,
+        @Param("reactionType") String reactionType
     );
 }

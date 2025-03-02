@@ -7,6 +7,7 @@ import com.kolown.porring.board.entity.Reaction;
 import com.kolown.porring.board.entity.ReactionType;
 import com.kolown.porring.board.repository.BoardRepository;
 import com.kolown.porring.board.repository.ReactionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class ReactionService {
             .getReactionType();
     }
 
+    @Transactional
     public void updateBoardReaction(
         Long boardId,
         Account account,
@@ -54,8 +56,7 @@ public class ReactionService {
             return;
         }
 
-        Optional<Reaction> reaction = reactionRepository
-            .findByAccountIdAndBoardIdWithDeleted(boardId, account.getId());
+        Optional<Reaction> reaction = reactionRepository.findByBoardIdAndAccountIdWithDeleted(boardId, account.getId());
 
         if (reaction.isEmpty()) {
             Reaction newReaction = new Reaction(board, account, reactionRequestDto.getReactionType());
@@ -63,8 +64,6 @@ public class ReactionService {
             return;
         }
 
-        Reaction newReaction = reaction.get();
-        newReaction.setReactionType(reactionRequestDto.getReactionType());
-        reactionRepository.restoreReaction(boardId, account.getId(), reactionRequestDto.getReactionType());
+        reactionRepository.restoreReaction(boardId, account.getId(), reactionRequestDto.getReactionType().toString());
     }
 }
