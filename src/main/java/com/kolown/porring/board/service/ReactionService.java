@@ -56,14 +56,14 @@ public class ReactionService {
             return;
         }
 
-        Optional<Reaction> reaction = reactionRepository.findByBoardIdAndAccountIdWithDeleted(boardId, account.getId());
+        boolean reactionExists = reactionRepository.existsByBoardIdAndAccountIdWithDeleted(boardId, account.getId());
 
-        if (reaction.isEmpty()) {
+        if (reactionExists) {
             Reaction newReaction = new Reaction(board, account, reactionRequestDto.getReactionType());
             reactionRepository.save(newReaction);
             return;
         }
 
-        reactionRepository.restoreReaction(boardId, account.getId(), reactionRequestDto.getReactionType().toString());
+        reactionRepository.restore(boardId, account.getId(), reactionRequestDto.getReactionType().toString());
     }
 }

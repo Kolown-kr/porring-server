@@ -3,7 +3,6 @@ package com.kolown.porring.board.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.kolown.porring.board.entity.ReactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,10 +19,10 @@ public interface ReactionRepository extends JpaRepository<Reaction, Reaction.Rea
 
     Optional<Reaction> findByAccountIdAndBoardId(@Param("accountId") Long accountId, @Param("boardId") Long boardId);
 
-    @Query(value = "SELECT * FROM reactions r " +
-        "WHERE r.board_id = :boardId AND r.account_id = :accountId",
+    @Query(value = "SELECT EXISTS (SELECT * FROM reactions r " +
+        "WHERE r.board_id = :boardId AND r.account_id = :accountId) AS exists",
         nativeQuery = true)
-    Optional<Reaction> findByBoardIdAndAccountIdWithDeleted(
+    boolean existsByBoardIdAndAccountIdWithDeleted(
         @Param("boardId") Long boardId,
         @Param("accountId") Long accountId
     );
@@ -32,7 +31,7 @@ public interface ReactionRepository extends JpaRepository<Reaction, Reaction.Rea
     @Query(value =
         "UPDATE reactions SET deleted = false, react_code = :reactionType " +
             "WHERE board_id = :boardId AND account_id = :accountId", nativeQuery = true)
-    void restoreReaction(
+    void restore(
         @Param("boardId") Long boardId,
         @Param("accountId") Long accountId,
         @Param("reactionType") String reactionType
