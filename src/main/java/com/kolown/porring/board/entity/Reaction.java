@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +34,25 @@ public class Reaction {
     public static class ReactionId implements Serializable {
         private Long boardId;
         private Long accountId;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+
+            if (obj == null || obj instanceof ReactionId) {
+                return false;
+            }
+
+            return Objects.equals(boardId, ((ReactionId) obj).boardId) &&
+                Objects.equals(accountId, ((ReactionId) obj).accountId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(boardId, accountId);
+        }
     }
 
     @EmbeddedId
@@ -50,10 +70,10 @@ public class Reaction {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "react_code")
-    @Setter
     private ReactionType reactionType;
 
     public Reaction(Board board, Account account, ReactionType reactionType) {
+        this.id = new ReactionId(board.getId(), account.getId());
         this.board = board;
         this.account = account;
         this.reactionType = reactionType;
