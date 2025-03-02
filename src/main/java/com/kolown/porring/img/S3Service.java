@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
@@ -53,7 +54,14 @@ public class S3Service {
         }
         return fileName.substring(fileName.lastIndexOf(".")); // 확장자 유지
     }
+    public void deleteS3Object(String fileKey) {
+        s3Client.deleteObject(
+                DeleteObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(fileKey)
+                        .build()
+        );
+    }
 
-    //TODO S3 오브젝트 삭제 로직 필요
 
 }
