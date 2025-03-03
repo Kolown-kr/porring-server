@@ -1,6 +1,6 @@
 package com.kolown.porring.img.entity;
 
-import com.kolown.porring.account.entity.BaseTimeEntity;
+import com.kolown.porring.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -27,4 +27,7 @@ public class ImageUsage extends BaseTimeEntity {
         this.boardId = null;
     }
 
+    public void enrollBoardId(Long boardId){
+        this.boardId = boardId;
+    }
 }

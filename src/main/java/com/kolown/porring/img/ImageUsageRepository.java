@@ -3,6 +3,7 @@ package com.kolown.porring.img;
 import com.kolown.porring.img.entity.ImageUsage;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,5 +19,7 @@ public interface ImageUsageRepository extends JpaRepository<ImageUsage,String> {
     // 삭제된 이미지 DB에서 삭제
     // 사용된 이미지 DB에서 삭제
     void deleteByS3Key(String s3Key);
+
+    Optional<ImageUsage> findImageUsageByS3Key(@Param("s3key") String s3key);
 
 }
