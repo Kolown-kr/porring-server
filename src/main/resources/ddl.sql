@@ -95,3 +95,10 @@ VALUES ('LOVE'),
        ('STAR'),
        ('THUMB'),
        ('HEART');
+
+CREATE TABLE `image_usage` (
+    `s3_key`   VARCHAR(255) PRIMARY KEY,  -- S3에서 파일을 식별하는 키
+    `board_id`  BIGINT NULL,
+    `created_at`  DATETIME NOT NULL,
+    `updated_at`  DATETIME NOT NULL
+);

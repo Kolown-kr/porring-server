@@ -11,6 +11,9 @@ import com.kolown.porring.board.entity.ReactionType;
 import com.kolown.porring.board.entity.Board;
 import com.kolown.porring.board.repository.BoardRepository;
 
+import com.kolown.porring.img.ImageUsageRepository;
+import com.kolown.porring.img.S3Service;
+import com.kolown.porring.img.entity.ImageUsage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +32,15 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final ReactionService reactionService;
     private final AccountFollowRepository accountFollowRepository;
+    private final ImageUsageRepository imageUsageRepository;
+    private final S3Service s3Service;
 
     public Board createBoard(CreateBoardRequestDto createBoardRequestDto, Account account) {
         // TODO: tag 들도 등록해야한다.
         Board board = new Board(account, createBoardRequestDto.getImageUrl(), createBoardRequestDto.getDescription());
+        ImageUsage imageUsage = imageUsageRepository.findImageUsageByS3Key(createBoardRequestDto.getImageUrl())
+                .orElseThrow(() -> new RuntimeException());
+        imageUsage.enrollBoardId(board.getId());
         return boardRepository.save(board);
     }
 
@@ -40,19 +48,19 @@ public class BoardService {
     public List<BoardResponseDto> getBoardsOfAccount(Account account, Account targetAccount) {
 
         Optional<AccountFollow> accountFollow =
-            accountFollowRepository.findByFollowerIdAndFolloweeId(account.getId(), targetAccount.getId());
+                accountFollowRepository.findByFollowerIdAndFolloweeId(account.getId(), targetAccount.getId());
 
         return boardRepository.findByAccountId(targetAccount.getId()).stream().map(board ->
-                BoardResponseDto.builder()
-                    .postId(board.getId())
-                    .authorId(board.getAccount().getId())
-                    .myReaction(reactionService.getBoardReactionOfAccount(board.getId(), account))
-                    .imageUrl(board.getImgUrls())
-                    .isFollower(accountFollow.isPresent())
-                    .tags(List.of())
-                    .reactions(reactionService.getBoardReactionList(board.getId()))
-                    .build())
-            .collect(Collectors.toList());
+                        BoardResponseDto.builder()
+                                .postId(board.getId())
+                                .authorId(board.getAccount().getId())
+                                .myReaction(reactionService.getBoardReactionOfAccount(board.getId(), account))
+                                .imageUrl(board.getImgUrls())
+                                .isFollower(accountFollow.isPresent())
+                                .tags(List.of())
+                                .reactions(reactionService.getBoardReactionList(board.getId()))
+                                .build())
+                .collect(Collectors.toList());
     }
 
 
@@ -65,14 +73,14 @@ public class BoardService {
             // TODO: 해당 함수 구현 필요
 
             return BoardResponseDto.builder()
-                .postId(board.getId())
-                .imageUrl(board.getImgUrls())
-                .isFollower(false)
-                .authorId(board.getAccount().getId())
-                .tags(Arrays.asList())
-                .reactions(reactions)
-                .myReaction(myReaction)
-                .build();
+                    .postId(board.getId())
+                    .imageUrl(board.getImgUrls())
+                    .isFollower(false)
+                    .authorId(board.getAccount().getId())
+                    .tags(Arrays.asList())
+                    .reactions(reactions)
+                    .myReaction(myReaction)
+                    .build();
         }).collect(Collectors.toList());
     }
 
@@ -93,7 +101,7 @@ public class BoardService {
     // TODO : 후에 Account 체크 하면 좋을 것 같습니다.
     @Transactional
     public Board updateBoard(long boardId, UpdateBoardRequestDto updateBoardRequestDto, Account account)
-        throws BoardPermissionException {
+            throws BoardPermissionException {
 
         Board board = boardRepository.findById(boardId).orElseThrow();
 
@@ -121,7 +129,7 @@ public class BoardService {
         if (!validateBoardPermissions(board, account)) {
             throw new BoardPermissionException();
         }
-
+        s3Service.deleteS3Object(board.getImgUrls());
         boardRepository.deleteById(boardId);
     }
 
