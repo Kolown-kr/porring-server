@@ -37,7 +37,7 @@ CREATE TABLE `oauth_accounts`
 
 CREATE TABLE `email_accounts`
 (
-    `account_id` BIGINT       NOT NULL AUTO_INCREMENT,
+    `account_id` BIGINT       NOT NULL,
     `email`      VARCHAR(320) NOT NULL,
     `password`   CHAR(60)     NOT NULL,
     PRIMARY KEY (`account_id`),
@@ -50,9 +50,11 @@ CREATE TABLE `accounts_follow`
     `follower_id`       BIGINT       NOT NULL,
     `followee_id`       BIGINT       NOT NULL,
     `nickname`          VARCHAR(255) NOT NULL,
+    `deleted`           TINYINT(1)   NOT NULL DEFAULT 0,
     PRIMARY KEY (`account_follow_id`),
     INDEX `idx_follower` (`follower_id`),
     INDEX `idx_followee` (`followee_id`),
+    INDEX `idx_follower_followee` (`follower_id`, `followee_id`),
     FOREIGN KEY (`follower_id`) REFERENCES `accounts` (`account_id`),
     FOREIGN KEY (`followee_id`) REFERENCES `accounts` (`account_id`)
 );
@@ -82,12 +84,21 @@ CREATE TABLE `reactions`
     FOREIGN KEY (`react_code`) REFERENCES `reaction_type` (`react_code`)
 );
 
-INSERT INTO `oauth_type` (oauth_type_code) VALUES ('KAKAO'), ('NAVER');
+INSERT INTO `oauth_type` (oauth_type_code)
+VALUES ('KAKAO'),
+       ('NAVER');
 
+INSERT INTO `reaction_type` (react_code)
+VALUES ('LOVE'),
+       ('SURPRISE'),
+       ('SMILE'),
+       ('STAR'),
+       ('THUMB'),
+       ('HEART');
 
 CREATE TABLE `image_usage` (
-    s3_key   VARCHAR(255) PRIMARY KEY,  -- S3에서 파일을 식별하는 키
-    board_id  BIGINT NULL,
+    `s3_key`   VARCHAR(255) PRIMARY KEY,  -- S3에서 파일을 식별하는 키
+    `board_id`  BIGINT NULL,
     `created_at`  DATETIME NOT NULL,
     `updated_at`  DATETIME NOT NULL
 );

@@ -4,12 +4,18 @@ import com.kolown.porring.account.entity.Account;
 import com.kolown.porring.board.dto.request.ReactionRequestDto;
 import com.kolown.porring.board.entity.Board;
 import com.kolown.porring.board.entity.Reaction;
+import com.kolown.porring.board.entity.ReactionType;
 import com.kolown.porring.board.repository.BoardRepository;
 import com.kolown.porring.board.repository.ReactionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -17,25 +23,47 @@ public class ReactionService {
     private final ReactionRepository reactionRepository;
     private final BoardRepository boardRepository;
 
-    public List<Reaction> getAllReactionsByBoardId(Long boardId) {
-        return reactionRepository.findByIdBoardId(boardId);
+    public List<ReactionType> getBoardReactionList(Long boardId) {
+
+        Set<ReactionType> reactionSet = new HashSet<>();
+
+        reactionRepository.findByBoardId(boardId).forEach(reaction -> {
+            reactionSet.add(reaction.getReactionType());
+        });
+
+        return new ArrayList<>(reactionSet);
     }
 
-    public Reaction createReaction(Account account, long boardId, ReactionRequestDto reactionRequestDto) {
+    public ReactionType getBoardReactionOfAccount(Long boardId, Account account) {
+        return reactionRepository
+            .findByAccountIdAndBoardId(account.getId(), boardId)
+            .orElseThrow()
+            .getReactionType();
+    }
+
+    @Transactional
+    public void updateBoardReaction(
+        Long boardId,
+        Account account,
+        ReactionRequestDto reactionRequestDto
+    ) {
         Board board = boardRepository.findById(boardId).orElseThrow();
 
-        Reaction reaction = new Reaction(board, account, reactionRequestDto.getReactionType());
+        Reaction.ReactionId id = new Reaction.ReactionId(boardId, account.getId());
 
-        return reactionRepository.save(reaction);
-    }
+        if (reactionRequestDto.getReactionType() == null) {
+            reactionRepository.deleteById(id);
+            return;
+        }
 
-    public Reaction updateBoardReaction(Long boardId, Long accountId, ReactionRequestDto reactionRequestDto) {
-        Reaction.ReactionId id = new Reaction.ReactionId(boardId, accountId);
+        boolean reactionExists = reactionRepository.existsByBoardIdAndAccountIdWithDeleted(boardId, account.getId());
 
-        Reaction reaction = reactionRepository.findById(id).orElseThrow();
+        if (reactionExists) {
+            Reaction newReaction = new Reaction(board, account, reactionRequestDto.getReactionType());
+            reactionRepository.save(newReaction);
+            return;
+        }
 
-        reaction.setReactionType(reactionRequestDto.getReactionType());
-
-        return reactionRepository.save(reaction);
+        reactionRepository.restore(boardId, account.getId(), reactionRequestDto.getReactionType().toString());
     }
 }
